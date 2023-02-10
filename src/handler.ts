@@ -2,6 +2,7 @@ import {
   UntypedHandleCall,
   ServerUnaryCall,
   sendUnaryData,
+  status,
 } from "@grpc/grpc-js";
 import { Params__Output } from "src/interfaces/pdf_creator/Params";
 import { PdfCreatorServiceHandlers } from "src/interfaces/pdf_creator/PdfCreatorService";
@@ -28,7 +29,10 @@ export class PdfHander implements PdfCreatorServiceHandlers {
         callback(null, { base64 });
       })
       .catch((err) => {
-        callback(err, null);
+        callback({
+          message: err.message,
+          code: status.INTERNAL
+        }, null);
       });
   }
 }
